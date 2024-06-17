@@ -14,7 +14,7 @@ if (window.self !== window.top) {
 	document.body.appendChild(myfiddleConsoleEl);
 	*/
 
-	var isProdMode = location.origin === "https://hassen-github.github.io" ? true : false;
+	var isProdMode = location.origin === "https://hassoon-github.github.io" ? true : false;
 	/*
 	"data": {
             "base": "vs",
