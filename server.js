@@ -1,50 +1,26 @@
 if (window.self !== window.top) {
-	/*
-	class  fiddleConsole extends HTMLElement{
-		constructor (){
-			super();
-
-			this.attachShadow({mode: "open"});
-
-		}
-	}
-	customElements.define("myfiddle-console", fiddleConsole);
-	var myfiddleConsoleEl = document.createElement("myfiddle-console");
-	myfiddleConsoleEl.style.cssText = "all: initial !important";
-	document.body.appendChild(myfiddleConsoleEl);
-	*/
-
 	var isProdMode = location.origin === "https://hassoon-github.github.io" ? true : false;
-	/*
-	"data": {
-            "base": "vs",
-            "inherit": true,
-              "colors": {
-                "editor.foreground": "#3B3B3B",
-                "editor.background": "#FFFFFF",
-                "editor.selectionBackground": "#BAD6FD",
-                "editor.lineHighlightBackground": "#00000012",
-                "editorCursor.foreground": "#000000",
-                "editorWhitespace.foreground": "#BFBFBF"
-              }
-        },
-	*/
+
+	var fiddleOrigin = isProdMode ? "https://ghanhass.github.io" : "http://localhost:4200";
+
+	generateConsoleStyleSheet();
+	
 	function generateConsoleStyleSheet(currentTheme, returnCss) {
 		if (currentTheme) {
-		  var themeForeGround = currentTheme.colors["editor.foreground"];
-		  var themeBackground = currentTheme.colors["editor.background"];
-		  var themeSelectionBackground = currentTheme.colors["editor.selectionBackground"];
-		  var themeLineHighlightBackground = currentTheme.colors["editor.lineHighlightBackground"];
-		  var themeCursorForeground = currentTheme.colors["editorCursor.foreground"];
-		  var themeWhitespaceForeground = currentTheme.colors["editorWhitespace.foreground"];
-	
-	
-		  var isDarkColor = currentTheme.base.indexOf("dark") > -1;
-		  var eraseIcon = currentTheme.base.indexOf("dark") > -1 ? "erase_white.png" : "erase.png";
-		  var crossIcon = currentTheme.base.indexOf("dark") > -1 ? "cross_white.png" : "cross.png";
-		  var arrowRight = currentTheme.base.indexOf("dark") > -1 ? "arrow-right_white.png" : "arrow-right.png";
-		  var arrowDown = currentTheme.base.indexOf("dark") > -1 ? "arrow-down_white.png" : "arrow-down.png";
-		  var cssText = `
+			var themeForeGround = currentTheme.colors["editor.foreground"];
+			var themeBackground = currentTheme.colors["editor.background"];
+			var themeSelectionBackground = currentTheme.colors["editor.selectionBackground"];
+			var themeLineHighlightBackground = currentTheme.colors["editor.lineHighlightBackground"];
+			var themeCursorForeground = currentTheme.colors["editorCursor.foreground"];
+			var themeWhitespaceForeground = currentTheme.colors["editorWhitespace.foreground"];
+
+
+			var isDarkColor = currentTheme.base.indexOf("dark") > -1;
+			var eraseIcon = currentTheme.base.indexOf("dark") > -1 ? "erase_white.png" : "erase.png";
+			var crossIcon = currentTheme.base.indexOf("dark") > -1 ? "cross_white.png" : "cross.png";
+			var arrowRight = currentTheme.base.indexOf("dark") > -1 ? "arrow-right_white.png" : "arrow-right.png";
+			var arrowDown = currentTheme.base.indexOf("dark") > -1 ? "arrow-down_white.png" : "arrow-down.png";
+			var cssText = `
 				******START Console panel******/
 	
 				#console-panel.console-panel .dev-tools-icon-container,
@@ -223,7 +199,7 @@ if (window.self !== window.top) {
 				#console-panel.console-panel .dev-tools-clear-console-icon {
 					width: 13px ;
 					height: 13px ;
-					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}assets/${eraseIcon}") ;
+					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}assets/${eraseIcon}") ;
 					float: left ;
 					background-size: contain ;
 					opacity: 0.5 ;
@@ -259,7 +235,7 @@ if (window.self !== window.top) {
 					width: 30px ;
 				
 					/* Source: chrome-devtools://devtools/bundled/Images/largeIcons_2x.png (in Google Chrome browser) */
-					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}assets/${crossIcon}") ;
+					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}assets/${crossIcon}") ;
 					background-position: 9px 8px ;
 					background-size: 10px 10px ;
 					order: 3 ;
@@ -516,12 +492,12 @@ if (window.self !== window.top) {
 					background-repeat: no-repeat ;
 				
 					/* chrome-devtools://devtools/bundled/Images/treeoutlineTriangles.png */
-					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}assets/${arrowRight}") ;
+					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}assets/${arrowRight}") ;
 				}
 	
 				#console-panel.console-panel div.jsoneditor-tree button.jsoneditor-button.jsoneditor-expanded {
 					/* chrome-devtools://devtools/bundled/Images/treeoutlineTriangles.png */
-					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}assets/${arrowDown}") ;
+					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}assets/${arrowDown}") ;
 				}
 	
 	
@@ -556,7 +532,7 @@ if (window.self !== window.top) {
 	
 				/* Begin: Styles to make JSON Editor match Chrome DevTools UI */
 				#console-panel.console-panel div.jsoneditor-field {
-					color: ${currentTheme.base == 'vs-dark' ? '#f1b5f5' : '#881391' } ;
+					color: ${currentTheme.base == 'vs-dark' ? '#f1b5f5' : '#881391'} ;
 				}
 	
 				#console-panel.console-panel div.jsoneditor-value.jsoneditor-string {
@@ -617,12 +593,12 @@ if (window.self !== window.top) {
 					background-repeat: no-repeat ;
 				}
 				#console-panel.console-panel .console-panel-expand-collapse.console-panel-expanded {
-					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}assets/${arrowDown}") ;
+					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}assets/${arrowDown}") ;
 					background-position: 0px 2px ;
 				}
 	
 				#console-panel.console-panel .console-panel-expand-collapse.console-panel-collapsed {
-					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}assets/${arrowRight}") ;
+					background-image: url("${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}assets/${arrowRight}") ;
 				}
 	
 				#console-panel.console-panel .only-first-line-of-code {
@@ -760,121 +736,72 @@ if (window.self !== window.top) {
 	
 				/******END Console panel******/
 				`
-		  if (returnCss){
-			return cssText;
-		  }
-		  else{
-			let shadowRoot = myfiddleConsoleEl.shadowRoot;
+			if (returnCss) {
+				return cssText;
+			}
+			else {
+				let shadowRoot = myfiddleConsoleEl.shadowRoot;
 
-			let styleEl = document.createElement("style");
-			styleEl.textContent = generateConsoleStyleSheet(window.currentTheme, true);
-			shadowRoot.appendChild(styleEl);
+				let styleEl = document.createElement("style");
+				styleEl.textContent = generateConsoleStyleSheet(window.currentTheme, true);
+				shadowRoot.appendChild(styleEl);
 
-			var styleSheetEl = shadowRoot.querySelector("style#console-stylesheet");
-		  	if (styleSheetEl) {
-				styleSheetEl.remove();
-		  	}
-		  
-		  	styleSheetEl = document.createElement("style");
-		  	styleSheetEl.id = "console-stylesheet";
-		  	styleSheetEl.textContent = cssText;
-			
-			shadowRoot.append(styleSheetEl);
-		  }
+				var styleSheetEl = shadowRoot.querySelector("style#console-stylesheet");
+				if (styleSheetEl) {
+					styleSheetEl.remove();
+				}
+
+				styleSheetEl = document.createElement("style");
+				styleSheetEl.id = "console-stylesheet";
+				styleSheetEl.textContent = cssText;
+
+				shadowRoot.append(styleSheetEl);
+			}
 		}
 	}
-	
-	var fiddleOrigin = isProdMode? "https://ghanhass.github.io" : "http://localhost:4200";
-  
-	//var iframeElement = document.querySelector("#myiframe");
-	//let myscript = document.querySelector("#myscript");
 
-	
-	window.addEventListener("load", function() {
-
-		/*
-		consolePanel.enable();
-
-		var consolePanelEl = myfiddleConsoleEl.shadowRoot.querySelector("#console-panel.console-panel");
-		consolePanelEl.style.display = "none";
-
-		//console.log("sub iframe load");
-		//console.log("window.detectedError = ", window.detectedError);
-		generateConsoleStyleSheet(window.currentTheme);
-		if(window.isConsoleOn || window.detectedError){
-			window.parent.postMessage("detected-error", fiddleOrigin);
-			consolePanel.showConsolePanel();
-			consolePanelEl.style.display = "";
+	function generateDocument(data = undefined) {
+		//var consolePanelEl = myfiddleConsoleEl.shadowRoot.querySelector("#console-panel.console-panel");
+		var finalData = data || {
+			html: `<html><body></body></html>`,
+			type: "run"
 		}
+		if (finalData.type == "run") { //run message
+			var blobUrl = "";
+			var html = finalData.html;
 
-		if(window.detectedError){
-			console.error(window.detectedError.toString());
+
+			html += `<script src='${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}server.js'></script>`;
+
+			var newBlob = new Blob([html], {
+				type: "text/html"
+			});
+
+			blobUrl = URL.createObjectURL(newBlob);
+			location.href = blobUrl;
 		}
-		*/
+	}
+
+	window.addEventListener("load", function () {
+		//console.log("load event inside the iframe!");
+		//console.log("-----------------------------");
 		window.parent.postMessage("sub-iframe-loaded", fiddleOrigin);
 	});
-  
-	window.addEventListener("message", function(event) {
-  
-	  //console.log("message event = ", event);
-	  if (event.origin == fiddleOrigin) {
-		//generateConsoleStyleSheet(event.data.currentTheme);
-		var data = JSON.parse(event.data);
-		//var consolePanelEl = myfiddleConsoleEl.shadowRoot.querySelector("#console-panel.console-panel");
-		if (data.type == "run") {
-		  //generateConsoleStyleSheet(event.data.currentTheme);
-		  var blobUrl = "";
-		  var html = data.html;
 
-		  //html += `<link rel='stylesheet' href='${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}mystyle.css'>`;
-		  
-		  //html += `<script src='${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}console-panel.js'></script>`;
-		  html += `<script src='${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/":"http://localhost/myfiddlepreview/"}server.js'></script>`;
-  
-		  var newBlob = new Blob([html], {
-			type: "text/html"
-		  });
+	window.addEventListener("message", function (q) {
 
-		  blobUrl = URL.createObjectURL(newBlob);
-
-		  location.href = blobUrl
-		  //console.log("created blob url ", blobUrl);
-		  
-		  //iframeElement.src = blobUrl;
-		  var myscript = document.querySelector("#myscript");
-		  if (myscript) {
-			myscript.remove();
-		  }
+		console.log("in-iframe message event");
+		window.parent.postMessage("run-message-received", fiddleOrigin);
+		if (event.origin === fiddleOrigin) {
+			//generateConsoleStyleSheet(event.data.currentTheme);
+			var data = JSON.parse(event.data);
+			generateDocument(data);
 		}
-		/*
-		else if (data.type == "change-console-theme") {
-		  //generateConsoleStyleSheet(data.currentTheme);
-		}
-		else if (data.type == "console-show") {
-		  /*consolePanel.showConsolePanel();
-		  consolePanelEl.style.display = "";
-
-		  myfiddleConsoleEl.shadowRoot.querySelector("#console-panel #console-input").focus();
-		}
-		else if (data.type == "console-hide") {
-			consolePanelEl.style.display = "none";
-			consolePanel.hideConsolePanel();
-		}
-		else if (data.type == "console-mobile-update") {
-			if(data.isFiddleMobileMode){
-				consolePanelEl.style.height = "100%";
-			}
-			else{
-				consolePanelEl.style.height = "400px";
-			}
-		}
-		*/
-	  }
 	});
-  
-  
-  
+
+
+
 	//console.log("inline script started");
-  } else {
+} else {
 	document.body.innerHTML = "<h1>Running this web page directly is forbidden, good day.</h1>"
-  }
+}
