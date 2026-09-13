@@ -3,7 +3,6 @@ if (window.self !== window.top) {
 
 	var fiddleOrigin = isProdMode ? "https://ghanhass.github.io" : "http://localhost:4200";
 	var iframeEl = null;
-	generateIframe();
 
 	writeInIframe(`
     			<!DOCTYPE html>
@@ -780,19 +779,23 @@ if (window.self !== window.top) {
 		}
 	}
 
+	function generateIframe() {
+		if (iframeEl) {
+			iframeEl.remove();
+		}
+		iframeEl = document.createElement("iframe");
+		iframeEl.style.cssText = "height:100%; width:100%; border:none;";
+		document.body.prepend(iframeEl);
+
+	}
+	
 	function writeInIframe(htmlDocumentCode) {
+		generateIframe();
+
 		var document = iframeEl.contentDocument || iframeEl.contentWindow.document;
 		document.open();
 		document.write(htmlDocumentCode);
 		document.close();
-	}
-
-	function generateIframe() {
-		if (!iframeEl) {
-			iframeEl = document.createElement("iframe");
-			iframeEl.style.cssText = "height:100%; width:100%; border:none;";
-			document.body.prepend(iframeEl);
-		}
 	}
 
 	function generateDocument(data) {
@@ -844,12 +847,12 @@ if (window.self !== window.top) {
 		if (event.origin === location.origin && event.data.type == "sub-iframe-loaded") {
 			//console.log("iframe message even received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
-			window.parent.postMessage({type:"sub-iframe-loaded"}, fiddleOrigin);
+			window.parent.postMessage({ type: "sub-iframe-loaded" }, fiddleOrigin);
 		}
 		else if (event.origin === fiddleOrigin && event.data.type == "run") {
 			//console.log("iframe message even received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
-			window.parent.postMessage({type:"run-message-received"}, fiddleOrigin);
+			window.parent.postMessage({ type: "run-message-received" }, fiddleOrigin);
 			var data = JSON.parse(event.data.data);
 			generateDocument(data);
 		}
