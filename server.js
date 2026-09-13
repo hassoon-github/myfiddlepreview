@@ -2,9 +2,29 @@ if (window.self !== window.top) {
 	var isProdMode = location.origin === "https://hassoon-github.github.io" ? true : false;
 
 	var fiddleOrigin = isProdMode ? "https://ghanhass.github.io" : "http://localhost:4200";
+	var iframeEl = null;
+	generateIframe();
+
+	writeInIframe(`
+    			<!DOCTYPE html>
+    			<html>
+    			    <head>
+    			    <meta charset="utf-8">
+    			    <meta name="referrer" content="strict-origin-when-cross-origin">
+					<script>
+					window.addEventListener("load", function () {
+						//console.log("load event inside the sub iframe!");
+						//console.log("-----------------------------");
+						window.parent.postMessage({type:"sub-iframe-loaded"}, location.origin);
+					});
+					</script>
+    			    </head>
+    			    <body> 
+    			    </body>
+    			</html>`);
 
 	generateConsoleStyleSheet();
-	
+
 	function generateConsoleStyleSheet(currentTheme, returnCss) {
 		if (currentTheme) {
 			var themeForeGround = currentTheme.colors["editor.foreground"];
@@ -410,7 +430,7 @@ if (window.self !== window.top) {
 				}
 	
 				/* This helps in keeping the console-panel-expand-collapse icon together with the highlighted
-				   code (for example when multiple items are logged via single console.log()) */
+				   code (for example when multiple items are logged via single //console.log()) */
 				#console-panel.console-panel .log-value-dom {
 					display: inline-block ;
 				}
@@ -760,41 +780,77 @@ if (window.self !== window.top) {
 		}
 	}
 
-	function generateDocument(data = undefined) {
-		//var consolePanelEl = myfiddleConsoleEl.shadowRoot.querySelector("#console-panel.console-panel");
-		var finalData = data || {
-			html: `<html><body></body></html>`,
-			type: "run"
-		}
-		if (finalData.type == "run") { //run message
-			var blobUrl = "";
-			var html = finalData.html;
+	function writeInIframe(htmlDocumentCode) {
+		var document = iframeEl.contentDocument || iframeEl.contentWindow.document;
+		document.open();
+		document.write(htmlDocumentCode);
+		document.close();
+	}
 
-
-			html += `<script src='${isProdMode ? "https://hassoon-github.github.io/myfiddlepreview/" : "http://localhost/myfiddlepreview/"}server.js'></script>`;
-
-			var newBlob = new Blob([html], {
-				type: "text/html"
-			});
-
-			blobUrl = URL.createObjectURL(newBlob);
-			location.href = blobUrl;
+	function generateIframe() {
+		if (!iframeEl) {
+			iframeEl = document.createElement("iframe");
+			iframeEl.style.cssText = "height:100%; width:100%; border:none;";
+			document.body.prepend(iframeEl);
 		}
 	}
 
-	window.addEventListener("load", function () {
-		//console.log("load event inside the iframe!");
-		//console.log("-----------------------------");
-		window.parent.postMessage("sub-iframe-loaded", fiddleOrigin);
-	});
+	function generateDocument(data) {
+		//var consolePanelEl = myfiddleConsoleEl.shadowRoot.querySelector("#console-panel.console-panel");
+		//console.log("generateFiddleCode data: ", data);
+		let htmlCode = data.html || '';
+		let cssCode = data.css || '';
+		let jsCode = data.js || "";
 
-	window.addEventListener("message", function (q) {
+		let htmlDocumentCode = `
+    			<!DOCTYPE html>
+    			<html>
+    			    <head>
+    			    <meta charset="utf-8">
+    			    <meta name="referrer" content="strict-origin-when-cross-origin">
+    			    </head>
+    			    <body> 
+    			        <!---->
+    			        <script>
+					  	window.onerror = function(e) {
+					  		window.detectedError = e;
+					  	};
+					    </script>
+						<script>
+						window.addEventListener("load", function () {
+							//console.log("load event inside the sub iframe!");
+							//console.log("-----------------------------");
+							window.parent.postMessage({type:"sub-iframe-loaded"}, location.origin);
+						});
+						</script>
+    			        
+    			        <!---->
 
-		console.log("in-iframe message event");
-		window.parent.postMessage("run-message-received", fiddleOrigin);
-		if (event.origin === fiddleOrigin) {
+    			        ${htmlCode}
+
+    			        <style>${cssCode}</style>
+    			        <script>${jsCode}</script>
+    			    </body>
+    			</html>`;
+
+		writeInIframe(htmlDocumentCode);
+
+	}
+
+
+	window.addEventListener("message", function (event) {
+
+
+		if (event.origin === location.origin && event.data.type == "sub-iframe-loaded") {
+			//console.log("iframe message even received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
-			var data = JSON.parse(event.data);
+			window.parent.postMessage({type:"sub-iframe-loaded"}, fiddleOrigin);
+		}
+		else if (event.origin === fiddleOrigin && event.data.type == "run") {
+			//console.log("iframe message even received: ", event);
+			//generateConsoleStyleSheet(event.data.currentTheme);
+			window.parent.postMessage({type:"run-message-received"}, fiddleOrigin);
+			var data = JSON.parse(event.data.data);
 			generateDocument(data);
 		}
 	});
