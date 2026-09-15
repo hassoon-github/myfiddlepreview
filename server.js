@@ -788,7 +788,7 @@ if (window.self !== window.top) {
 		document.body.prepend(iframeEl);
 
 	}
-	
+
 	function writeInIframe(htmlDocumentCode) {
 		generateIframe();
 
