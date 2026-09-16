@@ -91,7 +91,7 @@ if (window.self !== window.top) {
 
 
 		if (event.origin === location.origin && event.data.type == "sub-iframe-loaded") {
-			console.log("iframe message event received: ", event);
+			//console.log("iframe message event received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
 			window.parent.postMessage({ type: "sub-iframe-loaded" }, fiddleOrigin);
 		}
