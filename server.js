@@ -90,17 +90,20 @@ if (window.self !== window.top) {
 	window.addEventListener("message", function (event) {
 
 
-		if (event.origin === location.origin && event.data.type == "sub-iframe-loaded") {
+		if (event.origin === location.origin && event.data.type === "sub-iframe-loaded") {
 			//console.log("iframe message event received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
 			window.parent.postMessage({ type: "sub-iframe-loaded" }, fiddleOrigin);
 		}
-		else if (event.origin === fiddleOrigin && event.data.type == "run") {
+		else if (event.origin === fiddleOrigin && event.data.type === "run") {
 			//console.log("iframe RUN message even received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
 			window.parent.postMessage({ type: "run-message-received" }, fiddleOrigin);
 			var data = JSON.parse(event.data.data);
 			generateDocument(data);
+		}
+		else if(event.origin === fiddleOrigin && event.data.type === "print"){
+			iframeEl.contentWindow.print();
 		}
 	});
 
