@@ -677,7 +677,7 @@ if (window.self !== window.top) {
 
 	window.addEventListener("message", function (event) {
 
-		console.log("iframe received message = ", event);
+		//console.log("iframe received message = ", event);
 		if (event.origin === location.origin && event.data.type === "sub-iframe-loaded") {
 			//console.log("iframe message event received: ", event);
 			//generateConsoleStyleSheet(event.data.currentTheme);
@@ -695,7 +695,7 @@ if (window.self !== window.top) {
 		}
 		else if(event.origin === fiddleOrigin && event.data.type === "run-arbitrary-html"){
 			var keys = Object.keys(arbitraryHtmlObj)
-			console.log('arbitraryHtmlObj = ', arbitraryHtmlObj);
+			//console.log('arbitraryHtmlObj = ', arbitraryHtmlObj);
 			if(keys.includes(event.data.data)){
 				generateDocument({html: arbitraryHtmlObj[event.data.data]})
 			}
